@@ -17,16 +17,20 @@ This setup currently assumes a Windows development machine with:
 - Visual Studio Code
 - OpenAI Codex
 
-WinGet is used when possible to install and update these tools.
+### Installation
 
-For the Windows and Codex configuration tested here, install PowerShell with the
-MSI/WiX package explicitly:
+Install the base tools with WinGet:
 
 ```powershell
+winget install --id Microsoft.WindowsTerminal --exact --source winget
 winget install --id Microsoft.PowerShell --exact --source winget --version 7.6.4.0 --installer-type wix
+winget install --id Git.Git --exact --source winget
+winget install --id GitHub.cli --exact --source winget
+winget install --id Microsoft.VisualStudioCode --exact --source winget
 ```
 
-This is a compatibility workaround for Codex's Windows sandbox, not a general
+PowerShell is the only exception: its version and MSI/WiX installer are pinned
+as a compatibility workaround for Codex's Windows sandbox, not as a general
 preference for MSI over MSIX. See
 [`docs/decisions/001-powershell-msi-for-codex-windows.md`](docs/decisions/001-powershell-msi-for-codex-windows.md)
 for the test results, scope, and review conditions.
