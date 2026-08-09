@@ -40,12 +40,21 @@ language SDKs — are installed only when a project requires them.
 
 ## Recovery
 
+These instructions assume access to this repository and an Internet-connected
+Windows installation with WinGet available.
+
 1. Install the base tools listed above.
-2. Set the Windows Terminal default profile to `PowerShell` so it opens
-   PowerShell 7 by default.
-3. Authenticate with GitHub over HTTPS using `gh auth login --git-protocol https`.
-4. Clone this repository.
-5. Apply the Git configuration by running `.\git\setup.ps1`.
+2. Close the shell used for installation, open Windows Terminal, set
+   `PowerShell` as its default profile, and start a new PowerShell 7 session.
+3. Create a local copy of this repository and enter it:
+
+   ```powershell
+   git clone https://github.com/aeatencio/dev-setup.git
+   Set-Location .\dev-setup
+   ```
+
+4. Apply the Git configuration by running `.\git\setup.ps1`.
+5. Authenticate with GitHub over HTTPS using `gh auth login --git-protocol https`.
 6. Install the base Visual Studio Code extensions by running `.\vscode\setup.ps1`.
 7. Sign in to Visual Studio Code and enable Settings Sync.
 8. Authenticate Codex.
