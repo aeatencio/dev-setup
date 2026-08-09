@@ -78,6 +78,16 @@ so additional extensions are allowed. Local changes in `dev-setup` are reported
 as `[REVIEW]` because the local definition differs from the last committed
 state, not because the environment is broken.
 
+## Possible future improvement
+
+A future `bootstrap.ps1` may orchestrate the repeatable parts of Recovery,
+providing a single entry point for rebuilding the base environment.
+
+It should be added only after the documented Recovery process has been validated
+on a clean Windows installation. Its purpose would be to reduce manual steps and
+configuration drift, while keeping authentication, Settings Sync, and other
+interactive or sensitive state outside the script.
+
 ## Contents
 
 - `verify.ps1` — checks whether the machine meets the documented base setup.
