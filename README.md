@@ -50,7 +50,9 @@ language SDKs — are installed only when a project requires them.
 - `git/setup.ps1` — global Git preferences shared across my development machines.
 - `docs/decisions/001-powershell-msi-for-codex-windows.md` — rationale for using
   the PowerShell MSI/WiX package with Codex on Windows.
-- `vscode/extensions-legacy-2026-08-08.txt` — snapshot of legacy VS Code extensions before cleaning up the environment.
+- `vscode/extensions.txt` — current base VS Code extensions.
+- `vscode/extensions-legacy-2026-08-08.txt` — historical snapshot from before
+  cleaning up the environment.
 
 ## Security
 

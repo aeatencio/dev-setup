@@ -35,6 +35,14 @@ not match Codex Chat behavior. It is therefore not the primary health check. The
 relevant check is an actual multi-file repository operation from Codex Chat in
 VS Code.
 
+## Tested environment
+
+- Windows 25H2, build 26200.8875
+- PowerShell 7.6.4
+- Visual Studio Code 1.132.0
+- OpenAI VS Code extension 26.803.41515
+- bundled Codex CLI 0.147.0-alpha.6.5
+
 ## Decision
 
 Install PowerShell 7.6.4 explicitly with the MSI/WiX installer for this setup:
