@@ -49,9 +49,27 @@ language SDKs — are installed only when a project requires them.
 7. Authenticate Codex.
 8. Clone the repository you want to work on.
 9. Install any project-specific dependencies required by that repository.
+10. Verify the reconstructed environment by running `.\verify.ps1`.
+
+## Verification
+
+`verify.ps1` is a read-only check of the documented base environment. It does
+not install or repair tools, change configuration, or cover project-specific
+runtimes and tools. Tool versions are normally reported for information; only
+explicit compatibility decisions, such as the pinned PowerShell version and
+MSI/WiX installation, are enforced.
+
+`[OK]` means a check completed successfully, `[MISSING]` means a required part
+of the base environment is absent or incorrect, and `[REVIEW]` means a check
+could not be confirmed reliably or deserves attention. Only `[MISSING]` causes
+a nonzero exit code. The VS Code extension inventory defines a required minimum,
+so additional extensions are allowed. Local changes in `dev-setup` are reported
+as `[REVIEW]` because the local definition differs from the last committed
+state, not because the environment is broken.
 
 ## Contents
 
+- `verify.ps1` — checks whether the machine meets the documented base setup.
 - `git/setup.ps1` — global Git preferences shared across my development machines.
 - `docs/decisions/001-powershell-msi-for-codex-windows.md` — rationale for using
   the PowerShell MSI/WiX package with Codex on Windows.
