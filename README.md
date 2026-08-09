@@ -44,16 +44,19 @@ language SDKs — are installed only when a project requires them.
 2. Authenticate with GitHub using `gh auth login`.
 3. Clone this repository.
 4. Apply the Git configuration by running `.\git\setup.ps1`.
-5. Sign in to Visual Studio Code and enable Settings Sync.
-6. Authenticate Codex.
-7. Clone the repository you want to work on.
-8. Install any project-specific dependencies required by that repository.
+5. Install the base Visual Studio Code extensions by running `.\vscode\setup.ps1`.
+6. Sign in to Visual Studio Code and enable Settings Sync.
+7. Authenticate Codex.
+8. Clone the repository you want to work on.
+9. Install any project-specific dependencies required by that repository.
 
 ## Contents
 
 - `git/setup.ps1` — global Git preferences shared across my development machines.
 - `docs/decisions/001-powershell-msi-for-codex-windows.md` — rationale for using
   the PowerShell MSI/WiX package with Codex on Windows.
+- `vscode/setup.ps1` — installs the base extensions defined in
+  `vscode/extensions.txt`.
 - `vscode/extensions.txt` — current base VS Code extensions.
 - `vscode/extensions-legacy-2026-08-08.txt` — historical snapshot from before
   cleaning up the environment.
