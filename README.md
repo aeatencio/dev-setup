@@ -43,7 +43,7 @@ language SDKs — are installed only when a project requires them.
 1. Install the base tools listed above.
 2. Set the Windows Terminal default profile to `PowerShell` so it opens
    PowerShell 7 by default.
-3. Authenticate with GitHub using `gh auth login`.
+3. Authenticate with GitHub over HTTPS using `gh auth login --git-protocol https`.
 4. Clone this repository.
 5. Apply the Git configuration by running `.\git\setup.ps1`.
 6. Install the base Visual Studio Code extensions by running `.\vscode\setup.ps1`.
