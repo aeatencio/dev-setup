@@ -41,15 +41,17 @@ language SDKs — are installed only when a project requires them.
 ## Recovery
 
 1. Install the base tools listed above.
-2. Authenticate with GitHub using `gh auth login`.
-3. Clone this repository.
-4. Apply the Git configuration by running `.\git\setup.ps1`.
-5. Install the base Visual Studio Code extensions by running `.\vscode\setup.ps1`.
-6. Sign in to Visual Studio Code and enable Settings Sync.
-7. Authenticate Codex.
-8. Clone the repository you want to work on.
-9. Install any project-specific dependencies required by that repository.
-10. Verify the reconstructed environment by running `.\verify.ps1`.
+2. Set the Windows Terminal default profile to `PowerShell` so it opens
+   PowerShell 7 by default.
+3. Authenticate with GitHub using `gh auth login`.
+4. Clone this repository.
+5. Apply the Git configuration by running `.\git\setup.ps1`.
+6. Install the base Visual Studio Code extensions by running `.\vscode\setup.ps1`.
+7. Sign in to Visual Studio Code and enable Settings Sync.
+8. Authenticate Codex.
+9. Clone the repository you want to work on.
+10. Install any project-specific dependencies required by that repository.
+11. Verify the reconstructed environment by running `.\verify.ps1`.
 
 ## Verification
 
