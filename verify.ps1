@@ -56,6 +56,7 @@ $codexInstructionsOverride = Join-Path $HOME ".codex\AGENTS.override.md"
 $codexConfigSource = Join-Path $repoRoot "codex\config.toml"
 $codexConfigUtilities = Join-Path $repoRoot "codex\config-utils.ps1"
 $codexConfigDestination = Join-Path $HOME ".codex\config.toml"
+$minimumNodeMajorVersion = 24
 
 if ($IsWindows) {
     try {
@@ -88,6 +89,75 @@ if ($winget) {
     }
 } else {
     Write-Check MISSING "WinGet command is not available" $null
+}
+
+$node = Get-Command node -CommandType Application -ErrorAction SilentlyContinue
+if ($node) {
+    try {
+        $nodeVersionResult = Invoke-NativeText $node.Source @("--version")
+        if ($nodeVersionResult.ExitCode -eq 0 -and $nodeVersionResult.Output -match '^v(?<version>\d+\.\d+\.\d+)$') {
+            $nodeVersion = [version]$Matches.version
+            Write-Check OK "Node.js $($nodeVersionResult.Output)" $node.Source
+            if ($nodeVersion.Major -ge $minimumNodeMajorVersion) {
+                Write-Check OK "Node.js meets the minimum major version $minimumNodeMajorVersion" $null
+            } else {
+                Write-Check REVIEW "Node.js is older than the minimum major version $minimumNodeMajorVersion" $nodeVersionResult.Output
+            }
+        } else {
+            Write-Check REVIEW "Node.js is available, but its version could not be read" $node.Source
+        }
+    } catch {
+        Write-Check REVIEW "Node.js is available, but its version could not be read" $_.Exception.Message
+    }
+
+    try {
+        $nodeReleaseResult = Invoke-NativeText $node.Source @("-p", "JSON.stringify(process.release)")
+        if ($nodeReleaseResult.ExitCode -eq 0 -and $nodeReleaseResult.Output) {
+            $nodeRelease = $nodeReleaseResult.Output | ConvertFrom-Json
+            if ($nodeRelease.lts -is [string] -and $nodeRelease.lts) {
+                Write-Check OK "Node.js is an LTS release ($($nodeRelease.lts))" $null
+            } else {
+                Write-Check REVIEW "Node.js is not an LTS release" $node.Source
+            }
+        } else {
+            Write-Check REVIEW "Node.js LTS status could not be read" $node.Source
+        }
+    } catch {
+        Write-Check REVIEW "Node.js LTS status could not be interpreted" $_.Exception.Message
+    }
+
+    $expectedNodePath = "C:\Program Files\nodejs\node.exe"
+    if ($node.Source -ieq $expectedNodePath) {
+        Write-Check OK "Node.js executable is in the expected WinGet location" $node.Source
+    } else {
+        Write-Check REVIEW "Node.js executable is in an unexpected location" "Expected $expectedNodePath; found $($node.Source)"
+    }
+} else {
+    Write-Check MISSING "Node.js command is not available" $null
+}
+
+$npm = Get-Command npm -ErrorAction SilentlyContinue
+if ($npm) {
+    try {
+        $npmVersion = & $npm.Source --version 2>$null
+        $npmExitCode = $LASTEXITCODE
+        if ($npmExitCode -eq 0 -and $npmVersion -match '^\d+\.\d+\.\d+$') {
+            Write-Check OK "npm $npmVersion" $npm.Source
+        } else {
+            Write-Check REVIEW "npm is available, but its version could not be read" $npm.Source
+        }
+    } catch {
+        Write-Check REVIEW "npm is available, but its version could not be read" $npm.Source
+    }
+
+    $expectedNpmRoot = "C:\Program Files\nodejs"
+    if ((Split-Path $npm.Source -Parent) -ieq $expectedNpmRoot) {
+        Write-Check OK "npm is in the expected Node.js installation" $npm.Source
+    } else {
+        Write-Check REVIEW "npm is in an unexpected location" "Expected $expectedNpmRoot; found $($npm.Source)"
+    }
+} else {
+    Write-Check MISSING "npm command is not available" $null
 }
 
 if (Get-Command wt -ErrorAction SilentlyContinue) {

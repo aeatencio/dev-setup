@@ -15,6 +15,7 @@ This setup currently assumes a Windows development machine with:
 - Git for Windows
 - GitHub CLI
 - Visual Studio Code
+- Node.js LTS (including npm)
 - OpenAI Codex
 
 ### Installation
@@ -27,6 +28,7 @@ winget install --id Microsoft.PowerShell --exact --source winget --version 7.6.4
 winget install --id Git.Git --exact --source winget
 winget install --id GitHub.cli --exact --source winget
 winget install --id Microsoft.VisualStudioCode --exact --source winget
+winget install --id OpenJS.NodeJS.LTS --exact --source winget
 ```
 
 PowerShell is the only exception: its version and MSI/WiX installer are pinned
@@ -35,8 +37,9 @@ preference for MSI over MSIX. See
 [`docs/decisions/001-powershell-msi-for-codex-windows.md`](docs/decisions/001-powershell-msi-for-codex-windows.md)
 for the test results, scope, and review conditions.
 
-Project-specific runtimes and tools — such as Node.js, Python, Docker, or
-language SDKs — are installed only when a project requires them.
+Node.js is maintained on its LTS channel as a general runtime; npm is included
+with it. Python, Docker, other language SDKs, and project-specific tools are
+installed only when a project requires them.
 
 ## Recovery
 
@@ -55,18 +58,23 @@ Windows installation with WinGet available.
 
 4. Apply the Git configuration by running `.\git\setup.ps1`.
 5. Authenticate with GitHub over HTTPS using `gh auth login --git-protocol https`.
-6. Install the base Visual Studio Code extensions by running `.\vscode\setup.ps1`.
-7. Sign in to Visual Studio Code and enable Settings Sync.
-8. Configure the general collaboration defaults:
+6. Install or update Node.js LTS and its bundled npm by running
+   `.\node\setup.ps1`.
+7. Install the base Visual Studio Code extensions by running `.\vscode\setup.ps1`.
+8. Sign in to Visual Studio Code and enable Settings Sync.
+9. Configure the general collaboration defaults:
 
    - Copy the complete contents of `codex\AGENTS.md` into ChatGPT at
      `Settings > Personalization > Custom Instructions`.
    - Install the behavior agreement and technical Codex settings by running
      `.\codex\setup.ps1`.
-9. Authenticate Codex.
-10. Clone the repository you want to work on.
-11. Install any project-specific dependencies required by that repository.
-12. Verify the reconstructed environment by running `.\verify.ps1`.
+10. Authenticate Codex.
+11. Clone the repository you want to work on.
+12. Install each project's npm dependencies locally in that project's
+    repository. Each project declares its own Node.js compatibility; this setup
+    does not install frameworks, build tools, or project npm packages globally.
+13. Install any other project-specific dependencies required by that repository.
+14. Verify the reconstructed environment by running `.\verify.ps1`.
 
 `codex\AGENTS.md` contains general behavior values. `codex\config.toml` contains
 the user-level sandbox and approval defaults: workspace writes are allowed,
@@ -86,11 +94,11 @@ the general agreement.
 
 ## Verification
 
-`verify.ps1` is a read-only check of the documented base environment. It does
-not install or repair tools, change configuration, or cover project-specific
-runtimes and tools. Tool versions are normally reported for information; only
-explicit compatibility decisions, such as the pinned PowerShell version and
-MSI/WiX installation, are enforced.
+`verify.ps1` is a read-only, local check of the documented base environment. It
+does not install or repair tools, change configuration, query online for newer
+patches, or cover project-specific tools. Tool versions are normally reported
+for information; only explicit compatibility decisions, such as the pinned
+PowerShell version and MSI/WiX installation, are enforced.
 
 `[OK]` means a check completed successfully, `[MISSING]` means a required part
 of the base environment is absent or incorrect, and `[REVIEW]` means a check
@@ -124,6 +132,8 @@ interactive or sensitive state outside the script.
 - `codex/config.toml` — canonical user-level Codex sandbox and approval values.
 - `codex/setup.ps1` — safely installs the agreement and managed Codex settings.
 - `git/setup.ps1` — global Git preferences shared across my development machines.
+- `node/setup.ps1` — installs or updates Node.js within the WinGet LTS channel;
+  npm is bundled and no global npm packages are installed.
 - `docs/decisions/001-powershell-msi-for-codex-windows.md` — rationale for using
   the PowerShell MSI/WiX package with Codex on Windows.
 - `vscode/setup.ps1` — installs the base extensions defined in
