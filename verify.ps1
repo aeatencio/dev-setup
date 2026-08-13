@@ -50,6 +50,12 @@ function Write-Check {
 
 $repoRoot = $PSScriptRoot
 $extensionsFile = Join-Path $repoRoot "vscode\extensions.txt"
+$codexInstructionsSource = Join-Path $repoRoot "codex\AGENTS.md"
+$codexInstructionsDestination = Join-Path $HOME ".codex\AGENTS.md"
+$codexInstructionsOverride = Join-Path $HOME ".codex\AGENTS.override.md"
+$codexConfigSource = Join-Path $repoRoot "codex\config.toml"
+$codexConfigUtilities = Join-Path $repoRoot "codex\config-utils.ps1"
+$codexConfigDestination = Join-Path $HOME ".codex\config.toml"
 
 if ($IsWindows) {
     try {
@@ -212,6 +218,71 @@ if ($installedExtensions.ContainsKey("openai.chatgpt")) {
         Write-Check OK "Bundled Codex CLI is present" $codexExe.FullName
     } else {
         Write-Check MISSING "Bundled Codex CLI was not found in openai.chatgpt" $null
+    }
+}
+
+if (-not (Test-Path -LiteralPath $codexInstructionsSource -PathType Leaf)) {
+    Write-Check MISSING "Canonical Codex instructions are missing" $codexInstructionsSource
+} elseif (-not (Test-Path -LiteralPath $codexInstructionsDestination -PathType Leaf)) {
+    Write-Check MISSING "Global Codex instructions are not installed" $codexInstructionsDestination
+} else {
+    try {
+        $sourceHash = (Get-FileHash -LiteralPath $codexInstructionsSource -Algorithm SHA256).Hash
+        $destinationHash = (Get-FileHash -LiteralPath $codexInstructionsDestination -Algorithm SHA256).Hash
+        if ($sourceHash -eq $destinationHash) {
+            Write-Check OK "Global Codex instructions match the canonical source" $codexInstructionsDestination
+        } else {
+            Write-Check REVIEW "Global Codex instructions differ from the canonical source" $codexInstructionsDestination
+        }
+    } catch {
+        Write-Check REVIEW "Codex instructions could not be compared reliably" $_.Exception.Message
+    }
+}
+
+if (Test-Path -LiteralPath $codexInstructionsOverride) {
+    Write-Check REVIEW "A global Codex instructions override is present" $codexInstructionsOverride
+} else {
+    Write-Check OK "No global Codex instructions override is present" $null
+}
+
+if (-not (Test-Path -LiteralPath $codexConfigSource -PathType Leaf)) {
+    Write-Check MISSING "Canonical Codex configuration is missing" $codexConfigSource
+} elseif (-not (Test-Path -LiteralPath $codexConfigUtilities -PathType Leaf)) {
+    Write-Check MISSING "Codex configuration verifier is missing" $codexConfigUtilities
+} else {
+    try {
+        . $codexConfigUtilities
+        $configPlan = Get-CodexConfigPlan -SourcePath $codexConfigSource -DestinationPath $codexConfigDestination
+        switch ($configPlan.Status) {
+            "SourceMissing" {
+                Write-Check MISSING "Canonical Codex configuration is missing" $codexConfigSource
+            }
+            "SourceInvalid" {
+                Write-Check REVIEW "Canonical Codex configuration could not be interpreted reliably" ($configPlan.Errors -join " ")
+            }
+            "Create" {
+                Write-Check MISSING "Global Codex configuration is not installed" $codexConfigDestination
+            }
+            "Update" {
+                foreach ($key in $script:ManagedCodexConfigKeys) {
+                    if ($configPlan.Missing -contains $key) {
+                        Write-Check MISSING "Codex config: $key is not set" $codexConfigDestination
+                    } else {
+                        Write-Check OK "Codex config: $key=$($configPlan.Expected[$key])" $null
+                    }
+                }
+            }
+            "Current" {
+                foreach ($key in $script:ManagedCodexConfigKeys) {
+                    Write-Check OK "Codex config: $key=$($configPlan.Expected[$key])" $null
+                }
+            }
+            default {
+                Write-Check REVIEW "Global Codex configuration requires review" ($configPlan.Errors -join " ")
+            }
+        }
+    } catch {
+        Write-Check REVIEW "Codex configuration could not be interpreted reliably" $_.Exception.Message
     }
 }
 

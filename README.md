@@ -57,10 +57,32 @@ Windows installation with WinGet available.
 5. Authenticate with GitHub over HTTPS using `gh auth login --git-protocol https`.
 6. Install the base Visual Studio Code extensions by running `.\vscode\setup.ps1`.
 7. Sign in to Visual Studio Code and enable Settings Sync.
-8. Authenticate Codex.
-9. Clone the repository you want to work on.
-10. Install any project-specific dependencies required by that repository.
-11. Verify the reconstructed environment by running `.\verify.ps1`.
+8. Configure the general collaboration defaults:
+
+   - Copy the complete contents of `codex\AGENTS.md` into ChatGPT at
+     `Settings > Personalization > Custom Instructions`.
+   - Install the behavior agreement and technical Codex settings by running
+     `.\codex\setup.ps1`.
+9. Authenticate Codex.
+10. Clone the repository you want to work on.
+11. Install any project-specific dependencies required by that repository.
+12. Verify the reconstructed environment by running `.\verify.ps1`.
+
+`codex\AGENTS.md` contains general behavior values. `codex\config.toml` contains
+the user-level sandbox and approval defaults: workspace writes are allowed,
+escalations can be requested, and eligible requests go to automatic review.
+Project instructions and configuration may specialize these defaults; the
+concrete task always defines the current objective and authority. ChatGPT Custom
+Instructions are account configuration, remain manual, and cannot be checked by
+`verify.ps1`. Authentication, cookies, session data, and other sensitive state
+must remain outside this repository.
+
+`codex\setup.ps1` creates `$HOME\.codex` when needed and is safe to run again
+when the managed values are current. It does not overwrite different existing
+instructions or conflicting technical values. When safe, it adds missing root
+settings to `config.toml` while preserving unrelated options and sections. A
+global `AGENTS.override.md` is preserved and reported because it may displace
+the general agreement.
 
 ## Verification
 
@@ -78,6 +100,12 @@ so additional extensions are allowed. Local changes in `dev-setup` are reported
 as `[REVIEW]` because the local definition differs from the last committed
 state, not because the environment is broken.
 
+Verification checks the canonical agreement and technical configuration, their
+user-level installation, and whether an override or divergence deserves review.
+It does not inspect ChatGPT account settings or guarantee the permissions of a
+particular session: launch arguments, profiles, and project configuration may
+have higher precedence.
+
 ## Possible future improvement
 
 A future `bootstrap.ps1` may orchestrate the repeatable parts of Recovery,
@@ -91,6 +119,10 @@ interactive or sensitive state outside the script.
 ## Contents
 
 - `verify.ps1` — checks whether the machine meets the documented base setup.
+- `codex/AGENTS.md` — canonical general collaboration agreement for ChatGPT and
+  Codex.
+- `codex/config.toml` — canonical user-level Codex sandbox and approval values.
+- `codex/setup.ps1` — safely installs the agreement and managed Codex settings.
 - `git/setup.ps1` — global Git preferences shared across my development machines.
 - `docs/decisions/001-powershell-msi-for-codex-windows.md` — rationale for using
   the PowerShell MSI/WiX package with Codex on Windows.
