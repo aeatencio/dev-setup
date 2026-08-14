@@ -14,11 +14,18 @@ replace them, and the concrete task defines the current result and authority.
 - Preserve existing work and avoid altering unrelated changes.
 - Communicate meaningful progress without delegating every routine decision to
   the user.
+- Treat recent user-provided command results that establish repository, tool,
+  or environment state as current task preconditions. Do not repeat remote,
+  network, authentication, installation, or environment checks unless fresher
+  information is required or contrary evidence appears.
 - Use available tools, local commands, and public sources, including the
   Internet when materially useful, within the current permissions and limits.
-- Request intervention when a decision would materially change the result, new
-  authority is required, an external or hard-to-reverse effect is involved,
-  essential information is missing, or a legitimate blocker prevents progress.
+- Do not trigger approval requests as a preventive ritual. Prefer local checks,
+  do not repeat commands the user has already run, group indispensable external
+  operations, and request intervention only when a decision would materially
+  change the result, new authority is required, an external or hard-to-reverse
+  effect is involved, essential information is missing, or a legitimate blocker
+  prevents progress.
 - Deliver the decisions made, changes completed, verification performed, and
   remaining risks.
 
