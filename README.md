@@ -16,6 +16,7 @@ This setup currently assumes a Windows development machine with:
 - GitHub CLI
 - Visual Studio Code
 - Node.js LTS (including npm)
+- ChatGPT
 - OpenAI Codex
 
 ### Installation
@@ -85,6 +86,10 @@ Instructions are account configuration, remain manual, and cannot be checked by
 `verify.ps1`. Authentication, cookies, session data, and other sensitive state
 must remain outside this repository.
 
+Reusable instructions for coordinating development in ChatGPT Projects are
+documented in [`chatgpt/README.md`](chatgpt/README.md). They are copied into each
+Project manually and are not installed or synchronized by this repository.
+
 `codex\setup.ps1` creates `$HOME\.codex` when needed and is safe to run again
 when the managed values are current. It does not overwrite different existing
 instructions or conflicting technical values. When safe, it adds missing root
@@ -127,6 +132,10 @@ interactive or sensitive state outside the script.
 ## Contents
 
 - `verify.ps1` — checks whether the machine meets the documented base setup.
+- `chatgpt/README.md` — explains the manual use and maintenance of reusable
+  ChatGPT Project instructions.
+- `chatgpt/project-instructions/software-development.md` — canonical general
+  coordination instructions for software development Projects in ChatGPT.
 - `codex/AGENTS.md` — canonical general collaboration agreement for ChatGPT and
   Codex.
 - `codex/config.toml` — canonical user-level Codex sandbox and approval values.
