@@ -15,9 +15,16 @@ This setup currently assumes a Windows development machine with:
 - Git for Windows
 - GitHub CLI
 - Visual Studio Code
+- Cursor
 - Node.js LTS (including npm)
 - ChatGPT
 - OpenAI Codex
+
+Visual Studio Code remains the verified ChatGPT and Codex editor surface,
+including the bundled Codex CLI. Cursor is the primary implementation editor.
+Each editor has its own extension inventory. Cursor currently requires only the
+PowerShell extension; `openai.chatgpt` stays in Visual Studio Code and is not
+duplicated in Cursor. Do not import a Visual Studio Code profile into Cursor.
 
 ### Installation
 
@@ -29,6 +36,7 @@ winget install --id Microsoft.PowerShell --exact --source winget --version 7.6.4
 winget install --id Git.Git --exact --source winget
 winget install --id GitHub.cli --exact --source winget
 winget install --id Microsoft.VisualStudioCode --exact --source winget
+winget install --id Anysphere.Cursor --exact --source winget
 winget install --id OpenJS.NodeJS.LTS --exact --source winget
 ```
 
@@ -63,19 +71,22 @@ Windows installation with WinGet available.
    `.\node\setup.ps1`.
 7. Install the base Visual Studio Code extensions by running `.\vscode\setup.ps1`.
 8. Sign in to Visual Studio Code and enable Settings Sync.
-9. Configure the general collaboration defaults:
+9. Install the base Cursor extensions by running `.\cursor\setup.ps1`.
+10. Sign in to Cursor if an account is used. Do not import the Visual Studio
+    Code profile into Cursor.
+11. Configure the general collaboration defaults:
 
    - Copy the complete contents of `codex\AGENTS.md` into ChatGPT at
      `Settings > Personalization > Custom Instructions`.
    - Install the behavior agreement and technical Codex settings by running
      `.\codex\setup.ps1`.
-10. Authenticate Codex.
-11. Clone the repository you want to work on.
-12. Install each project's npm dependencies locally in that project's
+12. Authenticate Codex.
+13. Clone the repository you want to work on.
+14. Install each project's npm dependencies locally in that project's
     repository. Each project declares its own Node.js compatibility; this setup
     does not install frameworks, build tools, or project npm packages globally.
-13. Install any other project-specific dependencies required by that repository.
-14. Verify the reconstructed environment by running `.\verify.ps1`.
+15. Install any other project-specific dependencies required by that repository.
+16. Verify the reconstructed environment by running `.\verify.ps1`.
 
 `codex\AGENTS.md` contains general behavior values. `codex\config.toml` contains
 the user-level sandbox and approval defaults: workspace writes are allowed,
@@ -108,10 +119,10 @@ PowerShell version and MSI/WiX installation, are enforced.
 `[OK]` means a check completed successfully, `[MISSING]` means a required part
 of the base environment is absent or incorrect, and `[REVIEW]` means a check
 could not be confirmed reliably or deserves attention. Only `[MISSING]` causes
-a nonzero exit code. The VS Code extension inventory defines a required minimum,
-so additional extensions are allowed. Local changes in `dev-setup` are reported
-as `[REVIEW]` because the local definition differs from the last committed
-state, not because the environment is broken.
+a nonzero exit code. The VS Code and Cursor extension inventories define
+required minima, so additional extensions are allowed. Local changes in
+`dev-setup` are reported as `[REVIEW]` because the local definition differs
+from the last committed state, not because the environment is broken.
 
 Verification checks the canonical agreement and technical configuration, their
 user-level installation, and whether an override or divergence deserves review.
@@ -150,6 +161,9 @@ interactive or sensitive state outside the script.
 - `vscode/extensions.txt` — current base VS Code extensions.
 - `vscode/extensions-legacy-2026-08-08.txt` — historical snapshot from before
   cleaning up the environment.
+- `cursor/setup.ps1` — installs the base extensions defined in
+  `cursor/extensions.txt`.
+- `cursor/extensions.txt` — current base Cursor extensions.
 
 ## Security
 

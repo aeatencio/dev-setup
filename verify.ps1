@@ -48,8 +48,59 @@ function Write-Check {
     if ($Detail) { Write-Host "     $Detail" }
 }
 
+function Get-InstalledEditorExtensions {
+    param(
+        [string]$ExtensionsRoot,
+        [string]$ReviewLabel
+    )
+
+    $installed = @{}
+    if (-not (Test-Path -LiteralPath $ExtensionsRoot -PathType Container)) {
+        Write-Check REVIEW "$ReviewLabel extension directory could not be found" $ExtensionsRoot
+        return $installed
+    }
+
+    Get-ChildItem -LiteralPath $ExtensionsRoot -Directory | ForEach-Object {
+        $manifestPath = Join-Path $_.FullName "package.json"
+        if (Test-Path -LiteralPath $manifestPath -PathType Leaf) {
+            try {
+                $manifest = Get-Content -Raw -LiteralPath $manifestPath | ConvertFrom-Json
+                $extensionId = "$($manifest.publisher).$($manifest.name)".ToLowerInvariant()
+                $installed[$extensionId] = $_.FullName
+            } catch {
+                Write-Check REVIEW "Could not read $ReviewLabel extension manifest" $manifestPath
+            }
+        }
+    }
+
+    return $installed
+}
+
+function Find-EditorExecutable {
+    param(
+        [string]$CliPath,
+        [string]$ExecutableName
+    )
+
+    $directory = Split-Path -Path $CliPath -Parent
+    while ($directory) {
+        $candidate = Join-Path $directory $ExecutableName
+        if (Test-Path -LiteralPath $candidate -PathType Leaf) {
+            return $candidate
+        }
+        $parent = Split-Path -Path $directory -Parent
+        if (-not $parent -or $parent -eq $directory) {
+            break
+        }
+        $directory = $parent
+    }
+
+    return $null
+}
+
 $repoRoot = $PSScriptRoot
 $extensionsFile = Join-Path $repoRoot "vscode\extensions.txt"
+$cursorExtensionsFile = Join-Path $repoRoot "cursor\extensions.txt"
 $codexInstructionsSource = Join-Path $repoRoot "codex\AGENTS.md"
 $codexInstructionsDestination = Join-Path $HOME ".codex\AGENTS.md"
 $codexInstructionsOverride = Join-Path $HOME ".codex\AGENTS.override.md"
@@ -244,23 +295,9 @@ if ($code) {
         Write-Check REVIEW "Visual Studio Code version could not be read" $null
     }
 
-    $extensionsRoot = Join-Path $HOME ".vscode\extensions"
-    if (Test-Path -LiteralPath $extensionsRoot -PathType Container) {
-        Get-ChildItem -LiteralPath $extensionsRoot -Directory | ForEach-Object {
-            $manifestPath = Join-Path $_.FullName "package.json"
-            if (Test-Path -LiteralPath $manifestPath -PathType Leaf) {
-                try {
-                    $manifest = Get-Content -Raw -LiteralPath $manifestPath | ConvertFrom-Json
-                    $extensionId = "$($manifest.publisher).$($manifest.name)".ToLowerInvariant()
-                    $installedExtensions[$extensionId] = $_.FullName
-                } catch {
-                    Write-Check REVIEW "Could not read VS Code extension manifest" $manifestPath
-                }
-            }
-        }
-    } else {
-        Write-Check REVIEW "VS Code extension directory could not be found" $extensionsRoot
-    }
+    $installedExtensions = Get-InstalledEditorExtensions `
+        -ExtensionsRoot (Join-Path $HOME ".vscode\extensions") `
+        -ReviewLabel "VS Code"
 } else {
     Write-Check MISSING "Visual Studio Code command is not available" $null
 }
@@ -279,6 +316,41 @@ if (Test-Path -LiteralPath $extensionsFile -PathType Leaf) {
     }
 } else {
     Write-Check MISSING "VS Code extension inventory is missing" $extensionsFile
+}
+
+$cursor = Get-Command cursor -ErrorAction SilentlyContinue
+$installedCursorExtensions = @{}
+if ($cursor) {
+    $cursorExe = Find-EditorExecutable -CliPath $cursor.Source -ExecutableName "Cursor.exe"
+    if ($cursorExe) {
+        $cursorVersion = (Get-Item -LiteralPath $cursorExe).VersionInfo.ProductVersion
+        Write-Check OK "Cursor $cursorVersion" $cursorExe
+    } else {
+        Write-Check OK "Cursor command is available" $cursor.Source
+        Write-Check REVIEW "Cursor version could not be read" $null
+    }
+
+    $installedCursorExtensions = Get-InstalledEditorExtensions `
+        -ExtensionsRoot (Join-Path $HOME ".cursor\extensions") `
+        -ReviewLabel "Cursor"
+} else {
+    Write-Check MISSING "Cursor command is not available" $null
+}
+
+$requiredCursorExtensions = @()
+if (Test-Path -LiteralPath $cursorExtensionsFile -PathType Leaf) {
+    $requiredCursorExtensions = Get-Content -LiteralPath $cursorExtensionsFile |
+        ForEach-Object { $_.Trim().ToLowerInvariant() } |
+        Where-Object { $_ -and -not $_.StartsWith("#") }
+    foreach ($extensionId in $requiredCursorExtensions) {
+        if ($installedCursorExtensions.ContainsKey($extensionId)) {
+            Write-Check OK "Cursor extension: $extensionId" $null
+        } else {
+            Write-Check MISSING "Cursor extension: $extensionId" $null
+        }
+    }
+} else {
+    Write-Check MISSING "Cursor extension inventory is missing" $cursorExtensionsFile
 }
 
 if ($installedExtensions.ContainsKey("openai.chatgpt")) {
