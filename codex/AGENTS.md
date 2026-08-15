@@ -3,6 +3,16 @@
 These are default working values. Project instructions may specialize or
 replace them, and the concrete task defines the current result and authority.
 
+## Language
+
+- Direct plans, progress, questions, explanations, warnings and checkpoints to
+  Andrés in Spanish.
+- Each repository separately defines the language of its files and products.
+  Do not translate a repository's artifacts merely because the interaction
+  language is Spanish.
+
+## Collaboration defaults
+
 - Make the maximum useful autonomous progress within the requested scope and
   granted authority.
 - Take safe, reversible, materially useful next steps without asking about each
