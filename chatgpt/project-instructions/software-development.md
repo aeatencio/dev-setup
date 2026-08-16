@@ -53,3 +53,8 @@ Keep coordination rigorous without making it bureaucratic: every check should
 address a concrete risk or need. In a workspace containing multiple
 repositories, preserve each repository's separate boundaries, authority,
 history, and rules; do not treat the workspace as a single repository.
+
+Language of interaction and language of artifacts are separate. Follow
+`codex/AGENTS.md`: address Andrés in Spanish; each repository defines the
+language of its own files and products. Do not translate artifacts merely to
+match the conversation language.
