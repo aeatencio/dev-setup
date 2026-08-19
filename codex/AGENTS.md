@@ -40,3 +40,35 @@ replace them, and the concrete task defines the current result and authority.
   remaining risks.
 
 Autonomy does not grant unrestricted access or permission to expand the task.
+
+## Execution configuration
+
+When acting as director, coordinator, or technical owner and delegating work
+to another agent, choose the executor's configuration deliberately. That
+choice belongs to the director role, not to a particular tool, provider, or
+model family. Project instructions may specialize this policy for their own
+needs and risks; they must not replace it with a default vendor, family, or
+host tool.
+
+- Consider the options actually available at the time, including first-party
+  and third-party models, reasoning or effort levels, context sizes, and
+  speed or latency modes when the tool exposes them.
+- Do not automatically favor the director's own provider, model family, or
+  host tool, nor the most capable, expensive, or newest option.
+- Choose the minimum sufficient configuration for the task's nature,
+  difficulty, ambiguity, risk, required autonomy, and expected work.
+- For agentic repository work—investigation, inspection, multi-file editing,
+  tests, iteration, and self-correction—give particular weight to models
+  suited to that loop.
+- For simple, mechanical, or narrowly bounded work, prefer a lighter
+  configuration that is still sufficient.
+- Treat model, reasoning effort, context size, and speed modes as
+  independent choices when the tool allows. A larger context does not
+  substitute for stronger reasoning.
+- Named-model preferences are temporary. Reassess them when availability,
+  capability, behavior, tool integration, cost, or speed changes.
+- Prefer relevant empirical evidence from this workflow over vendor
+  preference or historical habit: result quality, checkpoint quality, scope
+  discipline, self-correction, need for human intervention, cost, and speed.
+- When the current option menu is known, select a concrete configuration.
+  Do not routinely leave that choice to the executor.
