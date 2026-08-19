@@ -220,10 +220,10 @@ if (Get-Command wt -ErrorAction SilentlyContinue) {
 $expectedPowerShellPath = "C:\Program Files\PowerShell\7\pwsh.exe"
 $powerShellVersion = $PSVersionTable.PSVersion.ToString()
 $powerShellPath = (Get-Process -Id $PID).Path
-if ($powerShellVersion -eq "7.6.4") {
+if ($PSVersionTable.PSVersion.Major -eq 7) {
     Write-Check OK "PowerShell $powerShellVersion" $powerShellPath
 } else {
-    Write-Check MISSING "PowerShell version is $powerShellVersion; expected 7.6.4" $powerShellPath
+    Write-Check MISSING "PowerShell version is $powerShellVersion; expected PowerShell 7" $powerShellPath
 }
 if ($powerShellPath -ieq $expectedPowerShellPath) {
     Write-Check OK "PowerShell executable matches the MSI/WiX installation" $powerShellPath

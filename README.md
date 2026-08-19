@@ -11,7 +11,7 @@ services rather than on a specific computer.
 This setup currently assumes a Windows development machine with:
 
 - Windows Terminal
-- PowerShell 7.6.4 installed with the MSI/WiX package
+- PowerShell 7 installed with the MSI/WiX package
 - Git for Windows
 - GitHub CLI
 - Visual Studio Code
@@ -32,7 +32,7 @@ Install the base tools with WinGet:
 
 ```powershell
 winget install --id Microsoft.WindowsTerminal --exact --source winget
-winget install --id Microsoft.PowerShell --exact --source winget --version 7.6.4.0 --installer-type wix
+winget install --id Microsoft.PowerShell --exact --source winget --installer-type wix
 winget install --id Git.Git --exact --source winget
 winget install --id GitHub.cli --exact --source winget
 winget install --id Microsoft.VisualStudioCode --exact --source winget
@@ -40,9 +40,9 @@ winget install --id Anysphere.Cursor --exact --source winget
 winget install --id OpenJS.NodeJS.LTS --exact --source winget
 ```
 
-PowerShell is the only exception: its version and MSI/WiX installer are pinned
-as a compatibility workaround for Codex's Windows sandbox, not as a general
-preference for MSI over MSIX. See
+PowerShell is the only exception: the MSI/WiX installer is required as a
+compatibility workaround for Codex's Windows sandbox, not as a general
+preference for MSI over MSIX. The patch version is not pinned. See
 [`docs/decisions/001-powershell-msi-for-codex-windows.md`](docs/decisions/001-powershell-msi-for-codex-windows.md)
 for the test results, scope, and review conditions.
 
@@ -113,8 +113,8 @@ the general agreement.
 `verify.ps1` is a read-only, local check of the documented base environment. It
 does not install or repair tools, change configuration, query online for newer
 patches, or cover project-specific tools. Tool versions are normally reported
-for information; only explicit compatibility decisions, such as the pinned
-PowerShell version and MSI/WiX installation, are enforced.
+for information; only explicit compatibility decisions, such as PowerShell 7
+and the MSI/WiX installation, are enforced.
 
 `[OK]` means a check completed successfully, `[MISSING]` means a required part
 of the base environment is absent or incorrect, and `[REVIEW]` means a check

@@ -1,7 +1,9 @@
 # 001: Use the PowerShell MSI/WiX package for Codex on Windows
 
 - Date: 2026-08-08
-- Status: Accepted (active workaround)
+- Status: Accepted (MSI/WiX workaround remains; exact 7.6.4 patch is not a
+  general pin)
+- Updated: 2026-08-19
 
 ## Context
 
@@ -69,3 +71,16 @@ Revisit this decision when any of the following changes materially:
 - Codex's Windows sandbox implementation;
 - the PowerShell version or distribution; or
 - an equivalent A/B test shows that MSIX works correctly.
+
+## Update (2026-08-19)
+
+The incompatibility confirmed on 2026-08-08 was the MSIX package versus
+MSI/WiX. PowerShell 7.6.4 was held constant in that A/B test; it was the
+tested snapshot, not an independent general requirement of the base
+environment.
+
+The standing requirement is PowerShell 7 installed with the MSI/WiX package
+at `C:\Program Files\PowerShell\7\pwsh.exe`. Later 7.x patches such as 7.6.5
+are accepted. The original install command with `--version 7.6.4.0` remains
+the historically verified command; current recovery installs the current
+PowerShell 7 MSI/WiX package without pinning that patch.
