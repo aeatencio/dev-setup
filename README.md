@@ -101,6 +101,12 @@ Reusable instructions for coordinating development in ChatGPT Projects are
 documented in [`chatgpt/README.md`](chatgpt/README.md). They are copied into each
 Project manually and are not installed or synchronized by this repository.
 
+The policy for choosing Cursor models and execution controls when preparing
+prompts is documented in
+[`cursor/execution-configuration.md`](cursor/execution-configuration.md). It is
+not installed or synchronized into Cursor; the current Cursor UI remains the
+authority for which models, controls, and values are actually available.
+
 `codex\setup.ps1` creates `$HOME\.codex` when needed and is safe to run again
 when the managed values are current. It does not overwrite different existing
 instructions or conflicting technical values. When safe, it adds missing root
@@ -161,6 +167,8 @@ interactive or sensitive state outside the script.
 - `vscode/extensions.txt` — current base VS Code extensions.
 - `vscode/extensions-legacy-2026-08-08.txt` — historical snapshot from before
   cleaning up the environment.
+- `cursor/execution-configuration.md` — policy for choosing Cursor models and
+  execution controls when preparing prompts.
 - `cursor/setup.ps1` — installs the base extensions defined in
   `cursor/extensions.txt`.
 - `cursor/extensions.txt` — current base Cursor extensions.
