@@ -79,10 +79,11 @@ Windows installation with WinGet available.
     Code profile into Cursor.
 11. Configure the general collaboration defaults:
 
-   - Apply the relevant general policy from `codex\AGENTS.md` as ChatGPT
-     Custom Instructions (`Settings > Personalization > Custom Instructions`).
-     That account field is a runtime projection: it may be in Spanish and may
-     include ChatGPT-specific rules. It is not a literal copy of the file.
+   - Open `chatgpt\custom-instructions.es.md`, copy its complete contents, and
+     paste them into ChatGPT Custom Instructions
+     (`Settings > Personalization > Custom Instructions`). This remains a
+     manual operation; `verify.ps1` cannot verify that the account field
+     matches the file.
    - Materialize the agreement and technical Codex settings by running
      `.\codex\setup.ps1`.
 12. Authenticate Codex.
@@ -93,18 +94,23 @@ Windows installation with WinGet available.
 15. Install any other project-specific dependencies required by that repository.
 16. Verify the reconstructed environment by running `.\verify.ps1`.
 
-`codex\AGENTS.md` is the versioned general collaboration policy.
+`codex\AGENTS.md` conserves the intention of the versioned general
+collaboration policy. `chatgpt\custom-instructions.es.md` conserves the exact
+projection currently intended for the ChatGPT Custom Instructions field. The
+`.es.md` file may differ by translation, compaction, and ChatGPT-exclusive
+rules; that deliberate divergence does not make the two files interchangeable
+authorities. If an unexplained semantic divergence appears, review it rather
+than merging the texts silently. Installing Custom Instructions in ChatGPT is
+manual; `verify.ps1` cannot verify that the account content matches the file.
 `codex\config.toml` contains the user-level Codex sandbox and approval
 defaults: workspace writes are allowed, escalations can be requested, and
 eligible requests go to automatic review. `codex\setup.ps1` materializes those
-files into `$HOME\.codex` when safe. ChatGPT Custom Instructions are a runtime
-projection of the relevant general policy, currently maintained in Spanish, and
-may include ChatGPT-specific rules; they remain manual and cannot be checked by
-`verify.ps1`. Project, repository, and task instructions may specialize or
-replace general values within their own authority. The concrete task defines
-the current objective and authority. These layers are not interchangeable
-sources of the same information. Authentication, cookies, session data, and
-other sensitive state must remain outside this repository.
+files into `$HOME\.codex` when safe. Project, repository, and task
+instructions may specialize or replace general values within their own
+authority. The concrete task defines the current objective and authority.
+These layers are not interchangeable sources of the same information.
+Authentication, cookies, session data, and other sensitive state must remain
+outside this repository.
 
 Reusable instructions for coordinating development in ChatGPT Projects are
 documented in [`chatgpt/README.md`](chatgpt/README.md). They are copied into each
@@ -142,9 +148,10 @@ from the last committed state, not because the environment is broken.
 
 Verification checks the canonical agreement and technical configuration, their
 user-level installation, and whether an override or divergence deserves review.
-It does not inspect ChatGPT account settings or guarantee the permissions of a
-particular session: launch arguments, profiles, and project configuration may
-have higher precedence.
+It does not inspect ChatGPT account settings, cannot confirm that Custom
+Instructions match `chatgpt/custom-instructions.es.md`, or guarantee the
+permissions of a particular session: launch arguments, profiles, and project
+configuration may have higher precedence.
 
 ## Possible future improvement
 
@@ -160,7 +167,9 @@ interactive or sensitive state outside the script.
 
 - `verify.ps1` — checks whether the machine meets the documented base setup.
 - `chatgpt/README.md` — explains the manual use and maintenance of reusable
-  ChatGPT Project instructions.
+  ChatGPT Project instructions and the Custom Instructions projection.
+- `chatgpt/custom-instructions.es.md` — exact projection currently intended
+  for ChatGPT Custom Instructions; copy its complete contents into that field.
 - `chatgpt/project-instructions/software-development.md` — canonical general
   coordination instructions for ChatGPT, Cursor, and Terminal in software
   development Projects.

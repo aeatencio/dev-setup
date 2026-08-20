@@ -7,16 +7,27 @@ Its contents establish how ChatGPT, Cursor, Terminal, and the user cooperate
 without defining a particular project's data, architecture, or technical source
 of truth.
 
+A development Project is this general template plus a product- or
+project-specific supplement. `dev-setup` versions the general template. It
+does not store supplements for concrete products.
+
 ## Configuration layers
 
 - **`dev-setup`** holds the versioned general development policy and the
   recoverable environment configuration.
-- **ChatGPT Custom Instructions** are a runtime projection of the general
-  rules ChatGPT needs to apply. They are currently maintained in Spanish and
-  may include ChatGPT-specific rules. They are not a literal copy of
-  `codex/AGENTS.md`.
+- **`codex/AGENTS.md`** conserves the intention of the versioned general
+  collaboration policy.
+- **`chatgpt/custom-instructions.es.md`** conserves the exact projection
+  currently intended for the ChatGPT Custom Instructions field. Copy its
+  complete contents into that account field. The file may differ from
+  `codex/AGENTS.md` by translation, compaction, and ChatGPT-exclusive rules.
+  That deliberate divergence does not make the two files interchangeable
+  authorities. If an unexplained semantic divergence appears, review it rather
+  than merging the texts silently. Installing the field in ChatGPT is manual;
+  `verify.ps1` cannot verify that the account content matches the file.
 - **Project instructions** apply this general template to one ChatGPT Project
-  and may add a product-specific supplement.
+  and may add a product-specific supplement in that Project. This repository
+  does not store those supplements.
 - **Repository instructions** are the local authority for that tree.
 - **The concrete task** defines the current objective, scope, and authority.
 
@@ -44,7 +55,8 @@ and controls are available; it does not by itself redefine the working method.
 3. Add a clearly separated project-specific supplement when needed. Keep that
    supplement focused on the project's purpose, canonical sources, repository
    boundaries, terminology, constraints, and authority rules; do not edit the
-   general template merely to store project-specific facts.
+   general template merely to store project-specific facts. Do not copy
+   product-specific supplements into this repository.
 4. Review the combined instructions for conflicts and save them in ChatGPT.
 
 There is no automatic synchronization between this repository and ChatGPT.

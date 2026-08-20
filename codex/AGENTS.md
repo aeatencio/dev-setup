@@ -88,21 +88,22 @@ host tool.
 The current UI of a tool governs which models and controls are actually
 available. It does not by itself redefine this working method.
 
-- Consider the options actually available at the time, including first-party
-  and third-party models, reasoning or effort levels, context sizes, and
-  speed or latency modes when the tool exposes them.
-- Do not automatically favor the director's own provider, model family, or
-  host tool, nor the most capable, expensive, or newest option.
-- Choose the minimum sufficient configuration for the task's nature,
-  difficulty, ambiguity, risk, required autonomy, and expected work.
+- Evaluate the options actually available. Do not privilege any provider.
+- Choose the model by fit to the concrete task. Do not automatically favor
+  the director's own provider, model family, or host tool, nor the most
+  capable, expensive, or newest option.
 - For agentic repository work—investigation, inspection, multi-file editing,
   tests, iteration, and self-correction—give particular weight to models
-  suited to that loop.
-- For simple, mechanical, or narrowly bounded work, prefer a lighter
-  configuration that is still sufficient.
-- Treat model, reasoning effort, context size, and speed modes as
-  independent choices when the tool allows. A larger context does not
-  substitute for stronger reasoning.
+  suited to that loop. For simple, mechanical, or narrowly bounded work,
+  prefer a lighter configuration that is still sufficient.
+- Present the execution recommendation to the user outside the prompt
+  destined for the executor. Always include model and effort. Include other
+  execution controls only when their choice is materially important for the
+  task. There is no mandatory fixed matrix of Thinking, effort, context, or
+  Fast.
+- Specify in-scope repositories and the authority over each inside the
+  operational prompt, together with the objective and other task
+  constraints.
 - Named-model preferences are temporary. Reassess them when availability,
   capability, behavior, tool integration, cost, or speed changes.
 - Prefer relevant empirical evidence from this workflow over vendor
