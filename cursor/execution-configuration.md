@@ -1,10 +1,14 @@
 # Cursor execution configuration
 
-This policy is intended for the agent responsible for technical and product
-direction when preparing work for Cursor. That agent selects the model and the
-execution controls Cursor actually exposes for that model; Cursor then executes
-under the resulting prompt and applicable project- and repository-specific
-constraints.
+This file operationalizes the versioned general execution-configuration policy
+in `codex/AGENTS.md` for prompts sent to Cursor. It is intended for the agent
+responsible for technical and product direction when preparing that work. That
+agent selects the model and the execution controls Cursor actually exposes for
+that model; Cursor then executes under the resulting prompt and applicable
+project- and repository-specific constraints.
+
+The current Cursor UI governs which models, controls, and values are actually
+available. It does not by itself redefine the working method.
 
 When preparing a prompt for Cursor, inspect the models and execution controls
 actually available for the task.
@@ -64,5 +68,7 @@ Because Cursor's available models and controls can change, prefer the current
 Cursor UI over hard-coded model-specific capability tables in these
 instructions.
 
-Project-specific instructions may further constrain repository scope,
-authority, permissions or execution behavior.
+Project, repository, and task instructions may specialize or replace general
+values within their own authority, including repository scope, permissions, or
+execution behavior. They do not replace this policy with a default vendor,
+family, or host tool.

@@ -3,24 +3,36 @@
 This directory stores reusable instructions for coordinating software
 development from a ChatGPT Project. The canonical general template is
 [`project-instructions/software-development.md`](project-instructions/software-development.md).
-Its contents establish how ChatGPT, Codex, Terminal, and the user cooperate
+Its contents establish how ChatGPT, Cursor, Terminal, and the user cooperate
 without defining a particular project's data, architecture, or technical source
 of truth.
 
 ## Configuration layers
 
-- **Project instructions** provide durable coordination rules for one ChatGPT
-  Project and may include a project-specific supplement.
-- **Personal instructions** express account-level preferences that apply across
-  ChatGPT conversations.
-- **`AGENTS.md`** files guide Codex: the global file supplies general defaults,
-  while repository files can specialize them for their own trees.
-- **`config.toml`** controls Codex's technical settings, such as sandbox and
-  approval behavior.
+- **`dev-setup`** holds the versioned general development policy and the
+  recoverable environment configuration.
+- **ChatGPT Custom Instructions** are a runtime projection of the general
+  rules ChatGPT needs to apply. They are currently maintained in Spanish and
+  may include ChatGPT-specific rules. They are not a literal copy of
+  `codex/AGENTS.md`.
+- **Project instructions** apply this general template to one ChatGPT Project
+  and may add a product-specific supplement.
+- **Repository instructions** are the local authority for that tree.
+- **The concrete task** defines the current objective, scope, and authority.
 
-These layers complement rather than replace one another. The canonical template
-does not override a project's own documentation, architecture decisions, data,
-or repository-specific rules.
+A more specific layer may specialize or replace general values within its
+authority. That does not make the layers interchangeable sources of the same
+information. This template does not override a project's own documentation,
+architecture decisions, data, or repository-specific rules.
+
+`codex/AGENTS.md` is the versioned general collaboration agreement.
+`codex/setup.ps1` can materialize it, together with `config.toml`, into the
+local Codex configuration. Codex remains installed and verified in VS Code;
+it is not the primary implementation path in this template. Cursor
+execution policy for preparing prompts is in
+[`cursor/execution-configuration.md`](../cursor/execution-configuration.md);
+it is not installed into Cursor. The current UI of a tool governs which models
+and controls are available; it does not by itself redefine the working method.
 
 ## Manual installation and updates
 

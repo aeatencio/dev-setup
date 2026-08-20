@@ -1,10 +1,13 @@
 # dev-setup
 
-Minimal, reproducible setup for my Windows development environment.
+Versioned, public record of my replaceable Windows development environment
+and of the general development policy that should remain portable,
+reproducible, auditable, or transparent outside a conversation.
 
-The goal is to keep development machines replaceable. Persistent configuration
-and recovery instructions should live in versioned repositories or cloud
-services rather than on a specific computer.
+The goal is to keep development machines replaceable and the working method
+recoverable. Persistent configuration and general policy should live in
+versioned repositories or cloud services rather than on a specific computer
+or in a single conversation.
 
 ## Base tools
 
@@ -76,9 +79,11 @@ Windows installation with WinGet available.
     Code profile into Cursor.
 11. Configure the general collaboration defaults:
 
-   - Copy the complete contents of `codex\AGENTS.md` into ChatGPT at
-     `Settings > Personalization > Custom Instructions`.
-   - Install the behavior agreement and technical Codex settings by running
+   - Apply the relevant general policy from `codex\AGENTS.md` as ChatGPT
+     Custom Instructions (`Settings > Personalization > Custom Instructions`).
+     That account field is a runtime projection: it may be in Spanish and may
+     include ChatGPT-specific rules. It is not a literal copy of the file.
+   - Materialize the agreement and technical Codex settings by running
      `.\codex\setup.ps1`.
 12. Authenticate Codex.
 13. Clone the repository you want to work on.
@@ -88,14 +93,18 @@ Windows installation with WinGet available.
 15. Install any other project-specific dependencies required by that repository.
 16. Verify the reconstructed environment by running `.\verify.ps1`.
 
-`codex\AGENTS.md` contains general behavior values. `codex\config.toml` contains
-the user-level sandbox and approval defaults: workspace writes are allowed,
-escalations can be requested, and eligible requests go to automatic review.
-Project instructions and configuration may specialize these defaults; the
-concrete task always defines the current objective and authority. ChatGPT Custom
-Instructions are account configuration, remain manual, and cannot be checked by
-`verify.ps1`. Authentication, cookies, session data, and other sensitive state
-must remain outside this repository.
+`codex\AGENTS.md` is the versioned general collaboration policy.
+`codex\config.toml` contains the user-level Codex sandbox and approval
+defaults: workspace writes are allowed, escalations can be requested, and
+eligible requests go to automatic review. `codex\setup.ps1` materializes those
+files into `$HOME\.codex` when safe. ChatGPT Custom Instructions are a runtime
+projection of the relevant general policy, currently maintained in Spanish, and
+may include ChatGPT-specific rules; they remain manual and cannot be checked by
+`verify.ps1`. Project, repository, and task instructions may specialize or
+replace general values within their own authority. The concrete task defines
+the current objective and authority. These layers are not interchangeable
+sources of the same information. Authentication, cookies, session data, and
+other sensitive state must remain outside this repository.
 
 Reusable instructions for coordinating development in ChatGPT Projects are
 documented in [`chatgpt/README.md`](chatgpt/README.md). They are copied into each
@@ -104,8 +113,9 @@ Project manually and are not installed or synchronized by this repository.
 The policy for choosing Cursor models and execution controls when preparing
 prompts is documented in
 [`cursor/execution-configuration.md`](cursor/execution-configuration.md). It is
-not installed or synchronized into Cursor; the current Cursor UI remains the
-authority for which models, controls, and values are actually available.
+not installed or synchronized into Cursor. The current Cursor UI governs which
+models, controls, and values are actually available; it does not by itself
+redefine the working method.
 
 `codex\setup.ps1` creates `$HOME\.codex` when needed and is safe to run again
 when the managed values are current. It does not overwrite different existing
@@ -152,11 +162,11 @@ interactive or sensitive state outside the script.
 - `chatgpt/README.md` — explains the manual use and maintenance of reusable
   ChatGPT Project instructions.
 - `chatgpt/project-instructions/software-development.md` — canonical general
-  coordination instructions for software development Projects in ChatGPT.
-- `codex/AGENTS.md` — canonical general collaboration agreement for ChatGPT and
-  Codex.
+  coordination instructions for ChatGPT, Cursor, and Terminal in software
+  development Projects.
+- `codex/AGENTS.md` — versioned general collaboration agreement.
 - `codex/config.toml` — canonical user-level Codex sandbox and approval values.
-- `codex/setup.ps1` — safely installs the agreement and managed Codex settings.
+- `codex/setup.ps1` — materializes the agreement and managed Codex settings.
 - `git/setup.ps1` — global Git preferences shared across my development machines.
 - `node/setup.ps1` — installs or updates Node.js within the WinGet LTS channel;
   npm is bundled and no global npm packages are installed.
