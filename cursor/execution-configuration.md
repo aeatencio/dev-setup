@@ -1,40 +1,47 @@
 # Cursor execution configuration
 
-This file operationalizes the versioned general execution-configuration policy
-in `codex/AGENTS.md` for work prepared for Cursor. It is intended for the agent
-responsible for technical and product direction when preparing that work. It
-does not replace `codex/AGENTS.md` as the general policy.
+This file documents the operational contract for work prepared for Cursor. It
+does not define model-selection policy.
 
-The current Cursor UI governs which models, controls, and values are actually
-available. It does not by itself redefine the working method.
+The normative policy for how ChatGPT evaluates available models and recommends
+model, effort, and other execution controls lives in ChatGPT Custom
+Instructions. The versioned projection in this repository is
+[`chatgpt/custom-instructions.es.md`](../chatgpt/custom-instructions.es.md).
+Copy its complete contents into ChatGPT (`Settings > Personalization > Custom
+Instructions`). That projection is the recoverable source for the Custom
+Instructions field; this file is not a parallel authority and must not diverge
+from it on model selection.
 
-When preparing work for Cursor, evaluate the models actually available. Do not
-privilege a provider. Choose the model by fit to the concrete task. Do not
-automatically choose the most powerful or most expensive option. Prefer models
-suited to agentic repository work for investigation, multi-file editing,
-testing, iteration, and self-correction; use lighter options for mechanical
-tasks.
+## Authority chain
 
-If an important decision requires a current Cursor option that is not available
-in context, ask for the necessary evidence.
+```
+ChatGPT Custom Instructions (runtime; projected in custom-instructions.es.md)
+        │
+        │ ChatGPT prepares work for Cursor
+        ▼
+ChatGPT recommends model + effort (+ other controls when material)
+        │
+        │ presented to the user before and outside the operational prompt
+        ▼
+User configures Cursor
+        │
+        ▼
+Cursor receives the operational prompt and executes
+```
 
-Project, repository, and task instructions may specialize or replace general
-values within their own authority, including repository scope, permissions, or
-execution behavior. They do not replace this policy with a default vendor,
-family, or host tool.
+Cursor does not autonomously choose the executor configuration as policy. The
+current Cursor UI governs which models, controls, and values are actually
+available; it does not by itself redefine the working method.
 
 ## Recommendation for the user
 
-Present the execution recommendation to the user before and outside the prompt
-destined for Cursor. Do not repeat in-scope repositories there.
+Before and outside the prompt pasted into Cursor, ChatGPT presents an execution
+recommendation to the user. That recommendation must always include model and
+effort. Include other execution controls only when materially important for the
+task.
 
-Always include:
-
-- model
-- effort
-
-Include other execution controls only when their choice is materially important
-for the task. Justify the choices briefly when that adds value.
+The recommendation is not part of the operational prompt. Do not repeat
+in-scope repositories in the recommendation.
 
 ## Prompt destined for Cursor
 
@@ -49,3 +56,8 @@ Include as applicable:
 - limits
 - verifications
 - close-out
+
+Project, repository, and task instructions may specialize or replace general
+values within their own authority, including repository scope, permissions, or
+execution behavior. They do not establish a parallel model-selection policy
+that competes with ChatGPT Custom Instructions.

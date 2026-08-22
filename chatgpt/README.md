@@ -39,11 +39,15 @@ architecture decisions, data, or repository-specific rules.
 `codex/AGENTS.md` is the versioned general collaboration agreement.
 `codex/setup.ps1` can materialize it, together with `config.toml`, into the
 local Codex configuration. Codex remains installed and verified in VS Code;
-it is not the primary implementation path in this template. Cursor
-execution policy for preparing prompts is in
+it is not the primary implementation path in this template. Cursor model-selection
+policy for preparing prompts lives in ChatGPT Custom Instructions; the
+recoverable projection is
+[`custom-instructions.es.md`](custom-instructions.es.md). The operational
+contract ChatGPT → user → Cursor is in
 [`cursor/execution-configuration.md`](../cursor/execution-configuration.md);
-it is not installed into Cursor. The current UI of a tool governs which models
-and controls are available; it does not by itself redefine the working method.
+that file does not define model-selection policy and is not installed into
+Cursor. The current UI of a tool governs which models and controls are
+available; it does not by itself redefine the working method.
 
 ## Manual installation and updates
 

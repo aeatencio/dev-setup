@@ -116,12 +116,15 @@ Reusable instructions for coordinating development in ChatGPT Projects are
 documented in [`chatgpt/README.md`](chatgpt/README.md). They are copied into each
 Project manually and are not installed or synchronized by this repository.
 
-The policy for choosing Cursor models and execution controls when preparing
-prompts is documented in
-[`cursor/execution-configuration.md`](cursor/execution-configuration.md). It is
-not installed or synchronized into Cursor. The current Cursor UI governs which
-models, controls, and values are actually available; it does not by itself
-redefine the working method.
+The policy for how ChatGPT chooses Cursor models and execution controls when
+preparing prompts lives in ChatGPT Custom Instructions; the recoverable
+projection is `chatgpt\custom-instructions.es.md`. The operational contract
+ChatGPT → user → Cursor is documented in
+[`cursor/execution-configuration.md`](cursor/execution-configuration.md). That
+file does not define model-selection policy and is not installed or
+synchronized into Cursor. The current Cursor UI governs which models, controls,
+and values are actually available; it does not by itself redefine the working
+method.
 
 `codex\setup.ps1` creates `$HOME\.codex` when needed and is safe to run again
 when the managed values are current. It does not overwrite different existing
@@ -186,8 +189,9 @@ interactive or sensitive state outside the script.
 - `vscode/extensions.txt` — current base VS Code extensions.
 - `vscode/extensions-legacy-2026-08-08.txt` — historical snapshot from before
   cleaning up the environment.
-- `cursor/execution-configuration.md` — policy for choosing Cursor models and
-  execution controls when preparing prompts.
+- `cursor/execution-configuration.md` — operational contract for ChatGPT → user
+  → Cursor when preparing prompts; model-selection policy remains in Custom
+  Instructions.
 - `cursor/setup.ps1` — installs the base extensions defined in
   `cursor/extensions.txt`.
 - `cursor/extensions.txt` — current base Cursor extensions.
